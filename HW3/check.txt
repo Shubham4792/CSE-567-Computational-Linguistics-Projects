@@ -1,0 +1,43 @@
+sed "s/m@ch@/mache/g" DA.txt > DA1.txt 
+sed "s/i@/i\?/g" DA1.txt > DA2.txt
+sed "s/gr@c/grac/g" DA2.txt > DA3.txt
+
+#remove ellipses
+sed "s/\.\.[ \.]//g" DA3.txt > DA4.txt
+
+#normalize contractions
+sed "s/??*/\./g" DA4.txt > DA5.txt
+sed "s/\!\!*/\./g" DA5.txt > DA6.txt
+sed "s/hat's/hat is/g" DA6.txt > DA7.txt
+sed "s/won't/will not/g" DA7.txt > DA8.txt
+sed "s/n't/ not/g" DA8.txt > DA9.txt
+sed "s/'ve/ have/g" DA9.txt > DA10.txt
+sed "s/'ll/ will/g" DA10.txt > DA11.txt
+sed "s/'m/ am/g" DA11.txt > DA12.txt
+sed "s/'re/ are/g" DA12.txt > DA13.txt
+sed "s/'d been/ had been/g" DA13.txt > DA14.txt
+sed "s/he's/he has/g" DA14.txt > DA15.txt
+sed "s/'d/ would/g" DA15.txt > DA16.txt
+sed "s/who's/who is/g" DA16.txt > DA17.txt
+sed "s/thing's/thing is/g" DA17.txt > DA18.txt
+sed "s/' / /g" DA18.txt > DA19.txt
+sed "s/'\./\./g" DA19.txt > DA20.txt
+sed "s/\.'/\. /g" DA20.txt > DA21.txt
+sed "s/\(.\)\1\1\1*/\1\1/g" DA21.txt > DA22.txt
+sed "s/let's/let us/g" DA22.txt > DA23.txt
+sed "s/it's/it is/g" DA23.txt > DA24.txt
+sed "s/'s/ s/g" DA24.txt > DA25.txt
+sed "s/'d/ d/g" DA25.txt > DA26.txt
+
+#remove all other punctuation
+sed "s/%/a percentage/g" DA26.txt > DA27.txt
+sed "s/-/ /g" DA27.txt >DA28.txt
+sed -e "s/[^a-zA-Z\. ]//g" DA27.txt > DA28.txt
+sed "s/   */ /g" DA28.txt > DA29.txt
+sed "s/\.  *\./\./g" DA29.txt > DA30.txt
+sed -e "s/\. \.//g" -e "s/   */ /g" DA30.txt > DA31.txt
+
+
+for i in `seq 1 30`; do rm DA$i.txt; done 
+rm DA.txt
+mv DA31.txt DA.txt

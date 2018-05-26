@@ -1,0 +1,1 @@
+java -cp "*" edu.stanford.nlp.tagger.maxent.MaxentTagger -model models/english-left3words-distsim.tagger -textFile DA.txt -tokenize true -outputFormat tsv -outputFile TDA.txt

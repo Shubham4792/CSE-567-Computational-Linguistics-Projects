@@ -1,0 +1,23 @@
+sed '/^\s*$/d' TDA.txt >TDA2.txt
+
+sort < TDA2.txt | uniq -c | sort -n -r > tauWordTagCount.txt
+
+sed 's/[^ ]*\t//' TDA2.txt > tags.txt
+
+sort < tags.txt | uniq -c | sort -n -r > tagCount.txt
+
+tail -n+2 tags.txt > tags2.txt
+
+paste tags.txt tags2.txt  > tagpairs.txt
+
+sort < tagpairs.txt | uniq -c | sort -n -r > sigmaTagsCount.txt
+
+sed -e "s/\t/,/g" -e "s/ *//g" -e "s/\([0-9][0-9]*\)/\1;/g" -e 's/^\(.*\);\(.*\)/\2,\1/' -e "s/^/sigma\(/" -e "s/$/\)\./" -e "s/(/('/" -e "s/,/','/1" -e "s/,/',/2" sigmaTagsCount.txt > sigmas.pl
+
+sed -e "s/\t/,/g" -e "s/ *//g" -e "s/\([0-9][0-9]*\)/\1;/g" -e 's/^\(.*\);\(.*\)/\2,\1/' -e "s/^/tau\(/" -e "s/$/\)\./" -e "s/(/('/" -e "s/,/','/1" -e "s/,/',/2" tauWordTagCount.txt > taus.pl
+
+sed -e "s/\t/,/g" -e "s/ *//g" -e "s/\([0-9][0-9]*\)/\1;/g" -e 's/^\(.*\);\(.*\)/\2,\1/' -e "s/^/tagcount\(/" -e "s/$/\)\./" -e "s/(/('/" -e "s/,/',/g" tagCount.txt > tagCount.pl
+
+rm TDA2.txt tauWordTagCount.txt tags.txt tags2.txt tagpairs.txt sigmaTagsCount.txt tagCount.txt
+
+
