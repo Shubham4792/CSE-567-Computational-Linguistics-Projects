@@ -1,0 +1,62 @@
+tr 'A-Z' 'a-z' < DA.txt | sed -e 's/i@/i?/g' -e 's/m@ch@/mache/g' -e 's/gr@ce/grace/g' -e 's/-/ /g' -e 's/[)(]//g' -e 's/, *"/\./g' -e 's/,//g' -e 's/\!\!*/\./g' -e 's/"//g' -e 's/\;/\./g' -e 's/\. and/ and/g' -e 's/%/a percent/g' -e 's/\://g' -e 's/  */ /g' -e 's/|/\./g'  -e 's/??*/\./g' -e 's/\.\.\.\.*//g' -e "s/hat's/hat is/g" -e "s/let's/let us/g" -e "s/it's/it is/g" -e "s/n't/ not/g" -e "s/i'm/i am/g" -e "s/here's/here is/g" -e "s/'re/ are/g" -e "s/'ve/ have/g" -e "s/'ll/ will/g" -e "s/he's/he has/g" -e "s/'d been/ had been/g" -e "s/'d/ would/g" -e "s/\.\./\./g" -e "s/who's/who is/g" -e "s/' / /g" -e  "s/'\./\./g" -e "s/\.'/\. /g" -e "s/\*//g" -e "s/\./@/g" -e "s/thing's/thing is/g" -e "s/'s/ s/g" -e 's/@ @//g' -e 's/ @/@/g' -e 's/ @//g' -e 's/\(.\)\1\1\1*/\1\1/g' -e 's/@/ @/g' -e '1,1s/^/@/g' -e 's/   */ /g' -e 's/@\([^ ]\)/@ \1/g ' >DA1.txt
+tr 'A-Z' 'a-z' < DA1.txt | tr -sc 'a-z@' '\n'| sort | uniq -c | sort -n -r >unigrams.txt
+sed '$d' < unigrams.txt >unigramfinal.txt
+egrep -o '[a-z@]+' < DA1.txt > unig1.txt
+tail -n+2 unig1.txt > unig2.txt
+paste unig1.txt unig2.txt > pairs.txt
+sort < pairs.txt | uniq -c | sort -n -r > bigrams.txt
+sed '$d' < bigrams.txt >bigramfinal.txt
+sed -e 's/^/bigram(/' -e 's/\([0-9]  *\)/&,/g' -e 's/  *//g' -e 's/\t/,/g' -e 's/$/\)\./' bigramfinal.txt > bigram_spandey4.pl
+sed -e 's/^/unigram(/' -e 's/\([0-9]  *\)/&,/g' -e 's/  *//g' -e 's/$/\)\./' unigramfinal.txt > unigram_spandey4.pl
+rm pairs.txt unigrams.txt bigrams.txt unig1.txt unig2.txt DA1.txt unigramfinal.txt bigramfinal.txt
+
+# Commands in the order they were executed
+# Removing capitalization
+# Replace i@ with i?
+# Replace m@ch@ with mache
+# Replace gr@ce with grace
+# Replace - with space
+# Remove ()
+# Replace , " pattern with period
+# Remove comma
+# Replace all instances of ! or  !+ with period
+# Remove "
+# Replace semi-colon with period
+# Remove period if it precedes and
+# Replace % with a percent
+# Remove colon
+# Replace all extra spaces with single space
+# Replace pipe(|) with period
+# Replace all question mark with single period
+# Remove ...
+# Replace hat's with hat is (Eg- what's -> what is)
+# Replace let's with let us
+# Replace it's with it is
+# Replace n't with not
+# Replace i'm with i am
+# Replace here's with here is
+# Replace 're with  are
+# Replace 've with  have
+# Replace 'll with  will
+# Replace he's with he has
+# Replace 'd been with had been
+# Replace 'd with would
+# Replace .. with .
+# Replace who's with who is
+# Replace apostrophe followed by space with just space
+# Replace apostrophe followed by period with just period
+# Replace period followed by apostrophe with period followed by space
+# Remove *
+# Replace period with @
+# Replace thing's with thing is
+# Replace apostrophe followed by s with space s, i.e 's-> s
+# Remove @ @
+# Remove extra space before @
+# Replace any pattern repeated 3 or more times to exactly twice
+# Append single space before @
+# Add @ to the beginning of the file
+# Remove all extra spaces
+# Add a space between @ and any other character
+# Create a list of all unique words
+# Remove last line from unigrams.txt and bigrams.txt
+# Rest of the commands are same as in slides
